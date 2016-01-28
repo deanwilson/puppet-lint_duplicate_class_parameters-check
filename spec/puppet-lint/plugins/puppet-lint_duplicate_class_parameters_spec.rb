@@ -1,6 +1,23 @@
 require 'spec_helper'
 
 describe 'duplicate_class_parameters' do
+
+  context 'class with no parameters' do
+   let(:code) do
+      <<-EOS
+        class file_resource {
+          file { '/tmp/my-file':
+            mode => '0600',
+          }
+        }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
   context 'class without duplicate parameter' do
     let(:code) do
       <<-EOS
