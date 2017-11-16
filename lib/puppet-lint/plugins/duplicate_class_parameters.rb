@@ -2,6 +2,7 @@ PuppetLint.new_check(:duplicate_class_parameters) do
   def check
     class_indexes.each do |class_idx|
       seen = Hash.new(0)
+      inside = nil
 
       # if there are no params there is nothing to do, return early.
       return if class_idx[:param_tokens].nil?
@@ -10,6 +11,18 @@ PuppetLint.new_check(:duplicate_class_parameters) do
         class_name = class_idx[:name_token].value
 
         if token.type == :VARIABLE
+          next_type = token.next_code_token.type
+
+          # handling for lines with an equals and a variable on the rhs
+          if next_type == :EQUALS
+            inside = true
+          elsif next_type == :COMMA
+            inside = false
+          end
+
+          # only proceed if we're at the end of a declaration.
+          next if !inside
+
           param_name = token.value
           seen[param_name] += 1
 
@@ -21,7 +34,6 @@ PuppetLint.new_check(:duplicate_class_parameters) do
               :column  => token.column,
             }
           end
-
         end
       end
     end
