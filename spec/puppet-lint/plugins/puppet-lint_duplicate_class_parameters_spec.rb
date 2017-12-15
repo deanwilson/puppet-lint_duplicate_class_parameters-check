@@ -77,6 +77,26 @@ describe 'duplicate_class_parameters' do
     end
   end
 
+  # bug found where a string on the RHS has a variable in it
+  context 'class with variable in a string on right hand side' do
+    let(:code) do
+      <<-EOS
+        class duplicated_string_rhs(
+          $initial  = $sys11mysql,
+          $stringed = "String containing ${initial}",
+        ) {
+          file { '/tmp/my-file':
+            mode => '0600',
+          }
+        }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
   # Examples that should fail specs
 
   context 'class with duplicate parameters' do
