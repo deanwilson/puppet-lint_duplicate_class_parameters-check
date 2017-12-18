@@ -16,6 +16,11 @@ PuppetLint.new_check(:duplicate_class_parameters) do
           # handling for lines with an equals and a variable on the rhs
           if next_type == :EQUALS
             inside = true
+
+            two_away = token.next_code_token.next_code_token.type
+            if two_away == :DQPRE
+              inside = false
+            end
           elsif next_type == :COMMA
             inside = false
           end
