@@ -162,4 +162,22 @@ describe 'duplicate_class_parameters' do
     end
   end
 
+  context 'class with a structure using a variable and assigned in another variable' do
+    let(:code) do
+      <<-EOS
+        class complex_structure_assignation (
+          Optional[String] $hostname = undef,
+          Array[String] $aliases = ["www.${hostname}"],
+        ) {
+          if $hostname {
+            # ...
+          }
+        }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
 end
