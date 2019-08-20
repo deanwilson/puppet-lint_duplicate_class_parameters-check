@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.5] - 2019-08-20  Dean Wilson <dean.wilson@gmail.com>
+
+### Changed
+
+- Fixed a bug when using complex structure assignments. The code
+  for the fix, and a working spec case, were submitted by @smortex
+  in PR#12
+
 ## [1.0.4] - 2017-11-16  Dean Wilson <dean.wilson@gmail.com>
 
 ### Changed

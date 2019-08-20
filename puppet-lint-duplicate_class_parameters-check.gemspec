@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-duplicate_class_parameters-check'
-  spec.version     = '1.0.4'
+  spec.version     = '1.0.5'
   spec.homepage    = 'https://github.com/deanwilson/puppet-lint_duplicate_class_parameters-check'
   spec.license     = 'MIT'
   spec.author      = 'Dean Wilson'
