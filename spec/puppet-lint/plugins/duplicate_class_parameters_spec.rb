@@ -1,16 +1,15 @@
 require 'spec_helper'
 
 describe 'duplicate_class_parameters' do
-
   context 'class with no parameters' do
-   let(:code) do
-      <<-EOS
+    let(:code) do
+      <<-TEST_CLASS
         class file_resource {
           file { '/tmp/my-file':
             mode => '0600',
           }
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
@@ -20,7 +19,7 @@ describe 'duplicate_class_parameters' do
 
   context 'class without duplicate parameter' do
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class file_resource(
           $unique = 'bar',
         ) {
@@ -31,7 +30,7 @@ describe 'duplicate_class_parameters' do
 
           $baz = 'xxzzy'
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
@@ -41,7 +40,7 @@ describe 'duplicate_class_parameters' do
 
   context 'class with duplicate right hand side' do
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class duplicated_rhs(
           $nagios_innodb_enable = $sys11mysql,
           $nagios_myisam_enable = $sys11mysql,
@@ -50,7 +49,7 @@ describe 'duplicate_class_parameters' do
             mode => '0600',
           }
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
@@ -60,7 +59,7 @@ describe 'duplicate_class_parameters' do
 
   context 'class with type and duplicate right hand side' do
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class duplicated_rhs(
           Boolean $nagios_innodb_enable = $sys11mysql::params::production_environment,
           Boolean $nagios_myisam_enable = $sys11mysql::params::production_environment,
@@ -69,7 +68,7 @@ describe 'duplicate_class_parameters' do
             mode => '0600',
           }
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
@@ -80,7 +79,7 @@ describe 'duplicate_class_parameters' do
   # bug found where a string on the RHS has a variable in it
   context 'class with variable in a string on right hand side' do
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class duplicated_string_rhs(
           $initial  = $sys11mysql,
           $stringed = "String containing ${initial}",
@@ -89,7 +88,7 @@ describe 'duplicate_class_parameters' do
             mode => '0600',
           }
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
@@ -102,7 +101,7 @@ describe 'duplicate_class_parameters' do
   context 'class with duplicate parameters' do
     let(:msg) { 'found duplicate parameter \'duplicated\' in class \'file_resource\'' }
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class file_resource(
           $duplicated = { 'a' => 1 },
           $duplicated = 'foo',
@@ -117,7 +116,7 @@ describe 'duplicate_class_parameters' do
 
           $baz = 'xxzzy'
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should detect two problems' do
@@ -132,13 +131,12 @@ describe 'duplicate_class_parameters' do
       expect(problems).to contain_warning(msg).on_line(3).in_column(11)
       expect(problems).to contain_warning(msg.sub('duplicated', 'not_unique')).on_line(5).in_column(11)
     end
-
   end
 
   context 'class with type and duplicate parameters' do
     let(:msg) { 'found duplicate parameter \'not_unique\' in class \'duplicated_type\'' }
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class duplicated_type(
           Boolean $not_unique = true,
           Boolean $not_unique = false,
@@ -150,7 +148,7 @@ describe 'duplicate_class_parameters' do
 
           $baz = 'xxzzy'
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should detect two problems' do
@@ -164,7 +162,7 @@ describe 'duplicate_class_parameters' do
 
   context 'class with a structure using a variable and assigned in another variable' do
     let(:code) do
-      <<-EOS
+      <<-TEST_CLASS
         class complex_structure_assignation (
           Optional[String] $hostname = undef,
           Array[String] $aliases = ["www.${hostname}"],
@@ -173,7 +171,7 @@ describe 'duplicate_class_parameters' do
             # ...
           }
         }
-      EOS
+      TEST_CLASS
     end
 
     it 'should not detect any problems' do
