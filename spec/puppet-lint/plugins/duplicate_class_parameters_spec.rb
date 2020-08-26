@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'duplicate_class_parameters' do
-  context 'class with no parameters' do
+  context 'when class has no parameters' do
     let(:code) do
       <<-TEST_CLASS
         class file_resource {
@@ -17,7 +17,7 @@ describe 'duplicate_class_parameters' do
     end
   end
 
-  context 'class without duplicate parameter' do
+  context 'when class has a parameter' do
     let(:code) do
       <<-TEST_CLASS
         class file_resource(
@@ -38,7 +38,7 @@ describe 'duplicate_class_parameters' do
     end
   end
 
-  context 'class with duplicate right hand side' do
+  context 'when class has a duplicate right hand side' do
     let(:code) do
       <<-TEST_CLASS
         class duplicated_rhs(
@@ -57,7 +57,7 @@ describe 'duplicate_class_parameters' do
     end
   end
 
-  context 'class with type and duplicate right hand side' do
+  context 'when class has types and a duplicate right hand side' do
     let(:code) do
       <<-TEST_CLASS
         class duplicated_rhs(
@@ -77,7 +77,7 @@ describe 'duplicate_class_parameters' do
   end
 
   # bug found where a string on the RHS has a variable in it
-  context 'class with variable in a string on right hand side' do
+  context 'when class has a string containing a variable on the right hand side' do
     let(:code) do
       <<-TEST_CLASS
         class duplicated_string_rhs(
@@ -98,7 +98,7 @@ describe 'duplicate_class_parameters' do
 
   # Examples that should fail specs
 
-  context 'class with duplicate parameters' do
+  context 'when class has duplicate parameters' do
     let(:msg) { 'found duplicate parameter \'duplicated\' in class \'file_resource\'' }
     let(:code) do
       <<-TEST_CLASS
@@ -133,7 +133,7 @@ describe 'duplicate_class_parameters' do
     end
   end
 
-  context 'class with type and duplicate parameters' do
+  context 'when class has a type and duplicate parameters' do
     let(:msg) { 'found duplicate parameter \'not_unique\' in class \'duplicated_type\'' }
     let(:code) do
       <<-TEST_CLASS
@@ -160,7 +160,7 @@ describe 'duplicate_class_parameters' do
     end
   end
 
-  context 'class with a structure using a variable and assigned in another variable' do
+  context 'when class has a structure using a variable and assigned in another variable' do
     let(:code) do
       <<-TEST_CLASS
         class complex_structure_assignation (

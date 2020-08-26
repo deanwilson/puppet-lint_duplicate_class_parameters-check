@@ -6,7 +6,7 @@ PuppetLint.new_check(:duplicate_class_parameters) do
       level = 0
 
       # if there are no params there is nothing to do, return early.
-      return if class_idx[:param_tokens].nil?
+      next if class_idx[:param_tokens].nil?
 
       class_idx[:param_tokens].each do |token|
         class_name = class_idx[:name_token].value
@@ -41,14 +41,14 @@ PuppetLint.new_check(:duplicate_class_parameters) do
         param_name = token.value
         seen[param_name] += 1
 
-        if seen[param_name] > 1
-          # warning output shows the parameter location each additional time it's seen
-          notify :warning, {
-            message: "found duplicate parameter '#{param_name}' in class '#{class_name}'",
-            line:    token.line,
-            column:  token.column,
-          }
-        end
+        next unless seen[param_name] > 1
+
+        # warning output shows the parameter location each additional time it's seen
+        notify :warning, {
+          message: "found duplicate parameter '#{param_name}' in class '#{class_name}'",
+          line:    token.line,
+          column:  token.column,
+        }
       end
     end
   end

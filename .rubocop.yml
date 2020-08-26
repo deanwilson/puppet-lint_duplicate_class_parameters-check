@@ -12,6 +12,7 @@ Style/TrailingCommaInHashLiteral:
 
 Metrics/BlockLength:
   Max: 35
+  ExcludedMethods: [ 'describe' ]
 
 Metrics/MethodLength:
   Max: 25
@@ -19,9 +20,11 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Max: 30
 
-#LineLength:
-#  Enabled: false
-#
+Layout/LineLength:
+  Max: 110
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
+
+RSpec/DescribeClass:
+  Enabled: false
