@@ -20,9 +20,8 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Max: 30
 
-#LineLength:
-#  Enabled: false
-#
+Layout/LineLength:
+  Max: 110
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
