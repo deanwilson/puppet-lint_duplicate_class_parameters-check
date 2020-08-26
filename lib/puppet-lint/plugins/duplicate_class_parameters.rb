@@ -6,7 +6,7 @@ PuppetLint.new_check(:duplicate_class_parameters) do
       level = 0
 
       # if there are no params there is nothing to do, return early.
-      return if class_idx[:param_tokens].nil?
+      next if class_idx[:param_tokens].nil?
 
       class_idx[:param_tokens].each do |token|
         class_name = class_idx[:name_token].value
